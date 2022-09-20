@@ -38,4 +38,9 @@ mat-sidenav {
   #menu-icon {
     justify-self: flex-end;
   }
+  a {
+    padding: 0 1rem;
+    text-decoration: none;
+    color: white;
+  }
 }

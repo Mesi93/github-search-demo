@@ -16,14 +16,13 @@
     <mat-toolbar color="primary" class="toolbar top-nav">
       <div class="toolbar">
         <div class="flex">
-          <p>Repo Search App</p>
+          <a mat-list-item>Repo Search App</a>
           <a
             *ngFor="let item of navItems"
             mat-list-item
             routerLink="{{ item.route }}"
             routerLinkActive="active"
           >
-            <mat-icon>{{ item.icon }}</mat-icon>
             <span> {{ item.title }}</span>
           </a>
         </div>

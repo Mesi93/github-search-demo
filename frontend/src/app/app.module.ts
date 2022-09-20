@@ -8,6 +8,7 @@ import { SearchPageComponent } from './feature/search/page/search-page/search-pa
 import { HistoryPageComponent } from './feature/history/page/history-page/history-page.component';
 import { NavComponent } from './shared/nav/nav.component';
 import { AngularMaterialModule } from './angular-material.modules';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,8 @@ import { AngularMaterialModule } from './angular-material.modules';
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
