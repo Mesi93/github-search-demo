@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { SearchParameters } from 'src/app/models/search-parameters';
+import { search } from 'src/app/store/search/search-actions';
 
 @Component({
   selector: 'app-search-page',
@@ -26,6 +28,12 @@ export class SearchPageComponent implements OnInit {
 
   onSearch() {
     console.log(this.searchForm.value);
+    const searchParams: SearchParameters = this.searchForm.getRawValue();
+    this._store.dispatch(
+      search({
+        searchParams,
+      })
+    );
   }
 
   onReset() {}

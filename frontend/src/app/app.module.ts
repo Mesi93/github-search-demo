@@ -1,3 +1,4 @@
+import { Store, StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -9,6 +10,9 @@ import { HistoryPageComponent } from './feature/history/page/history-page/histor
 import { NavComponent } from './shared/nav/nav.component';
 import { AngularMaterialModule } from './angular-material.modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EffectsModule } from '@ngrx/effects';
+import { SearchEffects } from './store/search/search-effects';
+import { searchReducer } from './store/search/search-reducer';
 
 @NgModule({
   declarations: [
@@ -24,8 +28,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    StoreModule.forRoot({
+      search: searchReducer,
+    }),
+    EffectsModule.forRoot([SearchEffects]),
   ],
-  providers: [],
+  providers: [Store],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
