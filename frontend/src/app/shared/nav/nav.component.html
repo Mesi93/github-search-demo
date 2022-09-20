@@ -1,0 +1,38 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav position="end">
+    <div class="header">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <mat-nav-list class="sidenav-list" (click)="sidenav.close()">
+      <a mat-list-item>Page 1</a>
+      <a mat-list-item>Page 2</a>
+      <a mat-list-item>Mobile</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar top-nav">
+      <div class="toolbar">
+        <div class="flex">
+          <p>Repo Search App</p>
+          <a
+            *ngFor="let item of navItems"
+            mat-list-item
+            routerLink="{{ item.route }}"
+            routerLinkActive="active"
+          >
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span> {{ item.title }}</span>
+          </a>
+        </div>
+        <button mat-icon-button (click)="sidenav.toggle()" id="menu-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
