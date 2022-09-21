@@ -1,0 +1,73 @@
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel #panel>
+    <mat-expansion-panel-header>
+      <form
+        class="form"
+        [formGroup]="searchForm"
+        (click)="$event.stopPropagation()"
+      >
+        <div>
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <mat-label>Search By</mat-label>
+            <input formControlName="searchBy" matInput />
+            <mat-error *ngIf="searchForm.controls['searchBy']">
+              Min. 3 characters are required
+            </mat-error>
+          </mat-form-field>
+          <br />
+          <span style="padding: 0 1rem">In:</span>
+          <mat-checkbox class="checkbox" formControlName="byName"
+            >Name</mat-checkbox
+          >
+          <mat-checkbox class="checkbox" formControlName="byDescription"
+            >Description</mat-checkbox
+          >
+          <mat-checkbox class="checkbox" formControlName="byReadme"
+            >Readme</mat-checkbox
+          >
+          <br /><small *ngIf="checkboxError" id="error-msg"
+            >Min. 1 search condition is required to be selected</small
+          >
+        </div>
+        <div *ngIf="!panel.expanded">
+          <button mat-icon-button (click)="onSearch()">
+            <mat-icon>search</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onReset()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel-header>
+    <div id="advanced-search-form">
+      <form [formGroup]="searchFormAdvanced">
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>User name: </mat-label>
+          <input formControlName="userName" matInput />
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>Organization: </mat-label>
+          <input formControlName="organization" matInput />
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>Languages: </mat-label>
+          <input formControlName="languages" matInput />
+        </mat-form-field>
+        <mat-icon (click)="addLanguage()">add</mat-icon>
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>Topics: </mat-label>
+          <input formControlName="topics" matInput />
+        </mat-form-field>
+        <mat-icon (click)="addTopic()">add</mat-icon>
+        <div *ngIf="panel.expanded">
+          <button mat-icon-button (click)="onSearch()">
+            <mat-icon>search</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onReset()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

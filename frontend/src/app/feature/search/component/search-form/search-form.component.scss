@@ -1,0 +1,26 @@
+mat-expansion-panel-header {
+  height: 170px;
+}
+.form {
+  margin-top: 1rem;
+  display: flex;
+  align-items: flex-start;
+  width: 98%;
+  justify-content: space-between;
+
+  .checkbox {
+    margin: 0 1rem;
+  }
+  #error-msg {
+    color: red;
+    font-size: 12px;
+  }
+}
+
+mat-form-field {
+  width: 90%;
+}
+
+#advanced-search-form {
+  margin-top: 3rem;
+}

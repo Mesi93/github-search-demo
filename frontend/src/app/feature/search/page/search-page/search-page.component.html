@@ -1,31 +1,4 @@
 <div class="page">
-  <mat-accordion class="example-headers-align" multi>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header #panelH (click)="panelH._toggle()">
-        <form class="form" [formGroup]="searchForm">
-          <mat-form-field
-            class="example-full-width"
-            appearance="fill"
-            (click)="panelH._toggle()"
-          >
-            <mat-label>Search By</mat-label>
-            <input formControlName="searchBy" matInput />
-          </mat-form-field>
-          <span>In:</span>
-          <mat-checkbox formControlName="byName">Name</mat-checkbox>
-          <mat-checkbox formControlName="byDescription"
-            >Description</mat-checkbox
-          >
-          <mat-checkbox formControlName="byReadme">Readme</mat-checkbox>
-        </form>
-      </mat-expansion-panel-header>
-
-      <button mat-icon-button (click)="onSearch()">
-        <mat-icon>search</mat-icon>
-      </button>
-      <button mat-icon-button (click)="onReset()">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-expansion-panel>
-  </mat-accordion>
+  <app-search-form (onSearchEvent)="onSearch($event)"></app-search-form>
+  <app-search-result></app-search-result>
 </div>

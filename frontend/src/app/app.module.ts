@@ -13,6 +13,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { SearchEffects } from './store/search/search-effects';
 import { searchReducer } from './store/search/search-reducer';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { SearchFormComponent } from './feature/search/component/search-form/search-form.component';
+import { SearchResultComponent } from './feature/search/component/search-result/search-result.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,9 @@ import { searchReducer } from './store/search/search-reducer';
     SearchPageComponent,
     HistoryPageComponent,
     NavComponent,
+    LoaderComponent,
+    SearchFormComponent,
+    SearchResultComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +34,7 @@ import { searchReducer } from './store/search/search-reducer';
     BrowserAnimationsModule,
     AngularMaterialModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     StoreModule.forRoot({
       search: searchReducer,

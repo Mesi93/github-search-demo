@@ -1,0 +1,12 @@
+<ng-container *ngIf="loader">
+  <div class="overlay"></div>
+  <div class="center">
+    <mat-spinner
+      [diameter]="diameter"
+      [color]="color"
+      [strokeWidth]="strokeWidth"
+      [value]="value"
+    >
+    </mat-spinner>
+  </div>
+</ng-container>

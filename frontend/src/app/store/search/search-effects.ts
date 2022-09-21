@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { GithubRepository } from 'src/app/feature/repositories/github.repository';
-
+import { GithubApiService } from 'src/app/service/github.service';
 import { search, searchError, searchSuccess } from './search-actions';
 
 @Injectable()
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private githubRepository: GithubRepository
+    private githubApiService: GithubApiService
   ) {}
 
   loadSearchResults$ = createEffect(() =>
     this.actions$.pipe(
       ofType(search),
-      tap((action) => console.log(action)),
       switchMap((action) =>
-        // this.githubRepository.getGithubStuff(action.searchParams)
-        of().pipe(
-          map((results) => searchSuccess(results)),
-          catchError((err) => of(searchError()))
+        this.githubApiService.getRepositories(action.searchParams).pipe(
+          map((results) => searchSuccess({ results: results.items })),
+          catchError((err) => of(searchError(err))),
+          tap(() => {
+            console.log('search finished');
+          })
         )
       )
     )

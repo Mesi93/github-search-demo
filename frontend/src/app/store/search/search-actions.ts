@@ -9,7 +9,10 @@ export const search = createAction(
 
 export const searchSuccess = createAction(
   '[Search] Search Success',
-  props<{ results: GithubApiResults[] }>()
+  props<{ results: any[] }>()
 );
 
-export const searchError = createAction('[Search] Search Error');
+export const searchError = createAction(
+  '[Search] Search Error',
+  props<{ error: any }>()
+);

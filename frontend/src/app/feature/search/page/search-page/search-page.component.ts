@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { SearchParameters } from 'src/app/models/search-parameters';
 import { search } from 'src/app/store/search/search-actions';
+import {
+  selectResults,
+  selectSearchApiStatus,
+} from 'src/app/store/search/search-selectors';
 
 @Component({
   selector: 'app-search-page',
@@ -10,31 +14,19 @@ import { search } from 'src/app/store/search/search-actions';
   styleUrls: ['./search-page.component.scss'],
 })
 export class SearchPageComponent implements OnInit {
-  searchForm!: FormGroup;
+  data$: Observable<any>;
   constructor(private _store: Store) {
-    this.createForm();
+    this.data$ = this._store.pipe(select(selectResults));
+    this.data$.subscribe((res) => console.log(res));
   }
 
   ngOnInit(): void {}
 
-  createForm(): void {
-    this.searchForm = new FormGroup({
-      searchBy: new FormControl(''),
-      byName: new FormControl(false),
-      byDescription: new FormControl(false),
-      byReadme: new FormControl(false),
-    });
-  }
-
-  onSearch() {
-    console.log(this.searchForm.value);
-    const searchParams: SearchParameters = this.searchForm.getRawValue();
+  onSearch(searchParams: SearchParameters): void {
     this._store.dispatch(
       search({
         searchParams,
       })
     );
   }
-
-  onReset() {}
 }
