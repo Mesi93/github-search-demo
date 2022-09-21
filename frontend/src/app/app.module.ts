@@ -18,6 +18,7 @@ import { SearchFormComponent } from './feature/search/component/search-form/sear
 import { SearchResultComponent } from './feature/search/component/search-result/search-result.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SortOrderByFormComponent } from './feature/search/component/sort-order-by-form/sort-order-by-form.component';
+import { SearchHistoryListComponent } from './feature/history/component/search-history-list/search-history-list.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { SortOrderByFormComponent } from './feature/search/component/sort-order-
     SearchFormComponent,
     SearchResultComponent,
     SortOrderByFormComponent,
+    SearchHistoryListComponent,
   ],
   imports: [
     BrowserModule,

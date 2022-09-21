@@ -1,0 +1,12 @@
+.page {
+  width: 95%;
+  margin: 2rem auto;
+  display: flex;
+  justify-content: space-between;
+  #history-list {
+    width: 30%;
+  }
+  #search-result {
+    width: 60%;
+  }
+}

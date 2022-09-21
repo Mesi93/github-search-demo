@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,6 +23,7 @@ export interface tableDataModel {
   styleUrls: ['./search-result.component.scss'],
 })
 export class SearchResultComponent implements AfterViewInit {
+  @Input() historyPage: boolean = false;
   repositories: tableDataModel[] = [];
   displayedColumns: string[] = [
     'name',
@@ -36,20 +37,24 @@ export class SearchResultComponent implements AfterViewInit {
   dataSource: MatTableDataSource<any>;
   githubData$!: Observable<GithubApiResults[]>;
   githubData!: GithubApiResults[];
+  githubHistoryData$!: Observable<GithubApiResults[]>;
+  githubHistoryData!: GithubApiResults[];
   totalCount: number = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private _store: Store) {
     this.dataSource = new MatTableDataSource();
-    this.githubData$ = this._store.pipe(select(selectResults));
-    this.githubData$.subscribe((res: any) => {
-      if (res) {
-        this.repositories = [];
-        this.totalCount = res.total_count;
-        this.setDataSource(res.items);
-      }
-    });
+    if (!this.historyPage) {
+      this.githubData$ = this._store.pipe(select(selectResults));
+      this.githubData$.subscribe((res: any) => {
+        if (res) {
+          this.repositories = [];
+          this.totalCount = res.total_count;
+          this.setDataSource(res.items);
+        }
+      });
+    }
   }
 
   setDataSource(repositories: any[]): void {
