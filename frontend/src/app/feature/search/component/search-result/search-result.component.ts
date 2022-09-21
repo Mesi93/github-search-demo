@@ -59,7 +59,7 @@ export class SearchResultComponent implements AfterViewInit {
         info: {
           watchers: repo.watchers,
           forks: repo.forks,
-          stars: repo.stargazers_coun,
+          stars: repo.stargazers_count,
           issues: repo.open_issues_count,
         },
         description: repo.description,

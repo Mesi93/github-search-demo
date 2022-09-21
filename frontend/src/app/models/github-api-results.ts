@@ -12,7 +12,7 @@ export interface GithubApiResults {
   language: string;
   description: string;
   forks: number;
-  stargazers_coun: number;
+  stargazers_count: number;
   open_issues_count: number;
   watchers: number;
 }
