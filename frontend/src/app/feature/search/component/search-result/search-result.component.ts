@@ -36,6 +36,7 @@ export class SearchResultComponent implements AfterViewInit {
   dataSource: MatTableDataSource<any>;
   githubData$!: Observable<GithubApiResults[]>;
   githubData!: GithubApiResults[];
+  totalCount: number = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -45,6 +46,7 @@ export class SearchResultComponent implements AfterViewInit {
     this.githubData$.subscribe((res: any) => {
       if (res) {
         this.repositories = [];
+        this.totalCount = res.total_count;
         this.setDataSource(res.items);
       }
     });
