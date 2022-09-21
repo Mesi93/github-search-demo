@@ -3,10 +3,11 @@
     (onSearchEvent)="onSearchBy($event)"
     (onResetEvent)="onReset()"
   ></app-search-form>
-  <div *ngIf="loaded">
+  <div *ngIf="loaded && !apiError">
     <app-sort-order-by-form
       (onSearchEvent)="onSortOrOrderBy($event)"
     ></app-sort-order-by-form>
     <app-search-result></app-search-result>
   </div>
+  <h2 *ngIf="apiError">Something went wrong... :(</h2>
 </div>

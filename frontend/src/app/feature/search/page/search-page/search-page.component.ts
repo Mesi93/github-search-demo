@@ -15,6 +15,7 @@ import { selectSearchApiStatus } from 'src/app/store/search/search-selectors';
 export class SearchPageComponent {
   searchApiStatus$: Observable<ApiStatus>;
   loaded: boolean = false;
+  apiError: boolean = false;
   searchForms: any;
   searchParams!: SearchParameters;
 
@@ -23,6 +24,11 @@ export class SearchPageComponent {
     this.searchApiStatus$.subscribe((res: ApiStatus) => {
       if (res === ApiStatus.Loaded) {
         this.loaded = true;
+      }
+      if (res === ApiStatus.Error) {
+        this.apiError = true;
+      } else {
+        this.apiError = false;
       }
     });
   }
