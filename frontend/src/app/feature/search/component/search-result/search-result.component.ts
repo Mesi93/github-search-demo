@@ -9,7 +9,7 @@ import { selectResults } from 'src/app/store/search/search-selectors';
 export interface tableDataModel {
   name: string;
   url: string;
-  info: string;
+  info: any;
   description: string;
   languages: string;
   date: any;
@@ -50,20 +50,25 @@ export class SearchResultComponent implements AfterViewInit {
     });
   }
 
-  setDataSource(data: any[]): void {
-    data.forEach((d: GithubApiResults) => {
-      let repo: tableDataModel = {
-        name: d.full_name,
-        url: d.html_url,
-        ownerUrl: d.owner.html_url,
-        info: 'asas',
-        description: d.description,
-        languages: d.language,
-        date: { createdAt: d.created_at, updatedAt: d.updated_at },
-        user: d.owner.login,
-        avatar: d.owner.avatar_url,
+  setDataSource(repositories: any[]): void {
+    repositories.forEach((repo: GithubApiResults) => {
+      let repository: tableDataModel = {
+        name: repo.full_name,
+        url: repo.html_url,
+        ownerUrl: repo.owner.html_url,
+        info: {
+          watchers: repo.watchers,
+          forks: repo.forks,
+          stars: repo.stargazers_coun,
+          issues: repo.open_issues_count,
+        },
+        description: repo.description,
+        languages: repo.language,
+        date: { createdAt: repo.created_at, updatedAt: repo.updated_at },
+        user: repo.owner.login,
+        avatar: repo.owner.avatar_url,
       };
-      this.repositories.push(repo);
+      this.repositories.push(repository);
       console.log('REPO', this.repositories);
       this.dataSource = new MatTableDataSource(this.repositories);
       this.dataSource.sort = this.sort;

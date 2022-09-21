@@ -37,6 +37,7 @@ import { SortOrderByFormComponent } from './feature/search/component/sort-order-
     AngularMaterialModule,
     FormsModule,
     HttpClientModule,
+
     ReactiveFormsModule,
     StoreModule.forRoot({
       search: searchReducer,

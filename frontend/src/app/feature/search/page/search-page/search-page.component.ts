@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { selectSearchApiStatus } from 'src/app/store/search/search-selectors';
   templateUrl: './search-page.component.html',
   styleUrls: ['./search-page.component.scss'],
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent {
   searchApiStatus$: Observable<ApiStatus>;
   loaded: boolean = false;
   searchForms: any;
@@ -27,8 +27,6 @@ export class SearchPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
   onSortOrOrderBy(searchParams: FormGroup): void {
     this.searchParams = { ...this.searchParams, ...searchParams };
     this.onSearch();
@@ -37,6 +35,7 @@ export class SearchPageComponent implements OnInit {
   onSearchBy(forms: any): void {
     this.searchForms = forms;
     this.searchParams = Object.assign({}, ...this.searchForms);
+    console.log('searchParams', this.searchParams);
     this.onSearch();
   }
 
@@ -46,5 +45,9 @@ export class SearchPageComponent implements OnInit {
         searchParams: this.searchParams,
       })
     );
+  }
+
+  onReset(): void {
+    this.loaded = false;
   }
 }

@@ -29,6 +29,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 const modules: any[] = [
   LayoutModule,
@@ -62,6 +63,7 @@ const modules: any[] = [
   MatBadgeModule,
   MatGridListModule,
   MatSnackBarModule,
+  MatChipsModule,
 ];
 
 @NgModule({

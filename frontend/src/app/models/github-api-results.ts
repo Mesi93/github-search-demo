@@ -11,4 +11,8 @@ export interface GithubApiResults {
   updated_at: string;
   language: string;
   description: string;
+  forks: number;
+  stargazers_coun: number;
+  open_issues_count: number;
+  watchers: number;
 }

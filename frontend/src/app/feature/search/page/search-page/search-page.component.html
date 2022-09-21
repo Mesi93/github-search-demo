@@ -1,5 +1,8 @@
 <div class="page">
-  <app-search-form (onSearchEvent)="onSearchBy($event)"></app-search-form>
+  <app-search-form
+    (onSearchEvent)="onSearchBy($event)"
+    (onResetEvent)="onReset()"
+  ></app-search-form>
   <div *ngIf="loaded">
     <app-sort-order-by-form
       (onSearchEvent)="onSortOrOrderBy($event)"

@@ -1,21 +1,21 @@
-<mat-accordion class="example-headers-align" multi>
+<mat-accordion multi>
   <mat-expansion-panel #panel>
     <mat-expansion-panel-header>
       <form
-        class="form"
+        id="search-form"
         [formGroup]="searchForm"
         (click)="$event.stopPropagation()"
       >
-        <div>
-          <mat-form-field class="example-full-width" appearance="legacy">
+        <div class="flex">
+          <mat-form-field appearance="legacy">
             <mat-label>Search By</mat-label>
             <input formControlName="searchBy" matInput />
             <mat-error *ngIf="searchForm.controls['searchBy']">
               Min. 3 characters are required
             </mat-error>
           </mat-form-field>
-          <br />
-          <span style="padding: 0 1rem">In:</span>
+
+          <span style="margin-left: 1rem">In:</span>
           <mat-checkbox class="checkbox" formControlName="byName"
             >Name</mat-checkbox
           >
@@ -25,46 +25,275 @@
           <mat-checkbox class="checkbox" formControlName="byReadme"
             >Readme</mat-checkbox
           >
-          <br /><small *ngIf="checkboxError" id="error-msg"
+          <br />
+          <small *ngIf="checkboxError" id="error-msg"
             >Min. 1 search condition is required to be selected</small
           >
         </div>
         <div *ngIf="!panel.expanded">
-          <button mat-icon-button (click)="onSearch()">
+          <button
+            class="button"
+            mat-raised-button
+            color="primary"
+            (click)="onSearch()"
+          >
             <mat-icon>search</mat-icon>
+            SEARCH
           </button>
-          <button mat-icon-button (click)="onReset()">
+          <button
+            class="button"
+            mat-raised-button
+            color="secondary"
+            (click)="onReset()"
+          >
             <mat-icon>delete</mat-icon>
+            RESET
           </button>
         </div>
       </form>
     </mat-expansion-panel-header>
+
     <div id="advanced-search-form">
       <form [formGroup]="searchFormAdvanced">
-        <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-form-field class="full-width" appearance="legacy">
           <mat-label>User name: </mat-label>
           <input formControlName="userName" matInput />
         </mat-form-field>
-        <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-form-field class="full-width" appearance="legacy">
           <mat-label>Organization: </mat-label>
           <input formControlName="organization" matInput />
         </mat-form-field>
-        <mat-form-field class="example-full-width" appearance="legacy">
-          <mat-label>Languages: </mat-label>
-          <input formControlName="languages" matInput />
+
+        <mat-form-field class="full-width" appearance="legacy">
+          <mat-label>Languages</mat-label>
+          <mat-chip-list #chipLanguageList>
+            <mat-chip
+              *ngFor="let language of languages"
+              (removed)="removeLanguage(language)"
+            >
+              {{ language }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input
+              formControlName="languages"
+              placeholder="New language..."
+              #languageInput
+              [matAutocomplete]="autoLanguage"
+              [matChipInputFor]="chipLanguageList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="addLanguage($event)"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #autoLanguage="matAutocomplete"
+            (optionSelected)="languageSelected($event)"
+          >
+            <mat-option
+              *ngFor="let language of filteredLanguages$ | async"
+              [value]="language"
+            >
+              {{ language }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
-        <mat-icon (click)="addLanguage()">add</mat-icon>
-        <mat-form-field class="example-full-width" appearance="legacy">
-          <mat-label>Topics: </mat-label>
-          <input formControlName="topics" matInput />
+
+        <mat-form-field class="full-width" appearance="legacy">
+          <mat-label>Topics</mat-label>
+          <mat-chip-list #chipTopicList>
+            <mat-chip
+              *ngFor="let topic of topics"
+              (removed)="removeTopic(topic)"
+            >
+              {{ topic }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input
+              formControlName="topics"
+              placeholder="New topic..."
+              #topicInput
+              [matAutocomplete]="autoTopic"
+              [matChipInputFor]="chipTopicList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="addTopic($event)"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #autoTopic="matAutocomplete"
+            (optionSelected)="topicSelected($event)"
+          >
+            <mat-option
+              *ngFor="let topic of filteredTopics$ | async"
+              [value]="topic"
+            >
+              {{ topic }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
-        <mat-icon (click)="addTopic()">add</mat-icon>
+
+        <mat-card class="advanced-form-section">
+          <div class="label-with-icon">
+            <mat-icon>star</mat-icon>
+            <span>Stars: </span>
+          </div>
+          <mat-radio-group
+            aria-label="Select an option"
+            formControlName="starsBy"
+          >
+            <mat-radio-button value="equal">equal</mat-radio-button>
+            <mat-radio-button value="greater than"
+              >greater than</mat-radio-button
+            >
+            <mat-radio-button value="less than">less than</mat-radio-button>
+            <mat-radio-button value="between">between</mat-radio-button>
+          </mat-radio-group>
+          <div
+            *ngIf="
+              searchFormAdvanced.controls['starsBy'].value === 'between';
+              else singleStarValue
+            "
+          >
+            <mat-form-field appearance="legacy">
+              <mat-label>Min: </mat-label>
+              <input formControlName="stars" matInput />
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <mat-label>Max: </mat-label>
+              <input formControlName="stars" matInput />
+            </mat-form-field>
+          </div>
+          <ng-template #singleStarValue>
+            <mat-form-field appearance="legacy">
+              <mat-label>Number: </mat-label>
+              <input formControlName="stars" matInput />
+            </mat-form-field>
+          </ng-template>
+        </mat-card>
+
+        <mat-card class="advanced-form-section">
+          <div class="label-with-icon">
+            <mat-icon>zoom_out_map</mat-icon>
+            <span><b>Size: </b> </span>
+          </div>
+          <mat-radio-group
+            aria-label="Select an option"
+            formControlName="sizeBy"
+          >
+            <mat-radio-button value="equal">equal</mat-radio-button>
+            <mat-radio-button value="greater than"
+              >greater than</mat-radio-button
+            >
+            <mat-radio-button value="less than">less than</mat-radio-button>
+            <mat-radio-button value="between">between</mat-radio-button>
+          </mat-radio-group>
+          <div
+            *ngIf="
+              searchFormAdvanced.controls['sizeBy'].value === 'between';
+              else singleSizeValue
+            "
+          >
+            <mat-form-field appearance="legacy">
+              <mat-label>Min: </mat-label>
+              <input formControlName="size" matInput />
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <mat-label>Max: </mat-label>
+              <input formControlName="size" matInput />
+            </mat-form-field>
+          </div>
+          <ng-template #singleSizeValue>
+            <mat-form-field appearance="legacy">
+              <mat-label>Number: </mat-label>
+              <input formControlName="size" matInput />
+            </mat-form-field>
+          </ng-template>
+        </mat-card>
+
+        <mat-card class="advanced-form-section">
+          <div class="label-with-icon">
+            <mat-icon>date_range</mat-icon>
+            <span> Created: </span>
+          </div>
+          <mat-radio-group
+            aria-label="Select an option"
+            formControlName="createdBy"
+          >
+            <mat-radio-button value="equal">equal</mat-radio-button>
+            <mat-radio-button value="greater than"
+              >greater than</mat-radio-button
+            >
+            <mat-radio-button value="less than">less than</mat-radio-button>
+            <mat-radio-button value="between">between</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-form-field
+            appearance="fill"
+            *ngIf="
+              searchFormAdvanced.controls['createdBy'].value === 'between';
+              else singleDate
+            "
+          >
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                formControlName="createdStart"
+                placeholder="Start date"
+              />
+              <input
+                matEndDate
+                formControlName="createdEnd"
+                placeholder="End date"
+              />
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+          <ng-template #singleDate>
+            <mat-form-field appearance="fill">
+              <mat-label>Choose a date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="created"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker> </mat-form-field
+          ></ng-template>
+        </mat-card>
+
         <div *ngIf="panel.expanded">
-          <button mat-icon-button (click)="onSearch()">
+          <button
+            class="button"
+            mat-raised-button
+            color="primary"
+            (click)="onSearch()"
+          >
             <mat-icon>search</mat-icon>
+            SEARCH
           </button>
-          <button mat-icon-button (click)="onReset()">
+          <button
+            class="button"
+            mat-raised-button
+            color="secondary"
+            (click)="onReset()"
+          >
             <mat-icon>delete</mat-icon>
+            RESET
           </button>
         </div>
       </form>
