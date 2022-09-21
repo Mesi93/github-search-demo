@@ -17,6 +17,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { SearchFormComponent } from './feature/search/component/search-form/search-form.component';
 import { SearchResultComponent } from './feature/search/component/search-result/search-result.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SortOrderByFormComponent } from './feature/search/component/sort-order-by-form/sort-order-by-form.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
     LoaderComponent,
     SearchFormComponent,
     SearchResultComponent,
+    SortOrderByFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -72,7 +72,7 @@ export class SearchFormComponent implements OnInit {
     if (this.searchForm.valid && !this.checkboxError) {
       console.log(this.searchForm.value);
       const forms = [this.searchForm.value, this.searchFormAdvanced.value];
-      this.onSearchEvent.emit(Object.assign({}, ...forms));
+      this.onSearchEvent.emit(forms);
     }
   }
 

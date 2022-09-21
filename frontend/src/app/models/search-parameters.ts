@@ -7,4 +7,6 @@ export interface SearchParameters {
   organization?: string;
   languages?: string[];
   topic?: string[];
+  sortBy: string;
+  orderBy: string;
 }

@@ -1,0 +1,16 @@
+<mat-card>
+  <form [formGroup]="sortAndOrderByForm" class="form">
+    <mat-radio-group formControlName="sortBy">
+      <mat-label>Sort by: </mat-label>
+      <mat-radio-button value="default">default</mat-radio-button>
+      <mat-radio-button value="stars">stars</mat-radio-button>
+      <mat-radio-button value="forks">forks</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-radio-group formControlName="orderBy">
+      <mat-label>Order by: </mat-label>
+      <mat-radio-button value="desc">desc</mat-radio-button>
+      <mat-radio-button value="asc">asc</mat-radio-button>
+    </mat-radio-group>
+  </form>
+</mat-card>

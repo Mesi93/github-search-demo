@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { ApiStatus } from 'src/app/models/api-status.enum';
 import { SearchParameters } from 'src/app/models/search-parameters';
 import { search } from 'src/app/store/search/search-actions';
-import {
-  selectResults,
-  selectSearchApiStatus,
-} from 'src/app/store/search/search-selectors';
+import { selectSearchApiStatus } from 'src/app/store/search/search-selectors';
 
 @Component({
   selector: 'app-search-page',
@@ -14,18 +13,37 @@ import {
   styleUrls: ['./search-page.component.scss'],
 })
 export class SearchPageComponent implements OnInit {
-  data$: Observable<any>;
+  searchApiStatus$: Observable<ApiStatus>;
+  loaded: boolean = false;
+  searchForms: any;
+  searchParams!: SearchParameters;
+
   constructor(private _store: Store) {
-    this.data$ = this._store.pipe(select(selectResults));
-    this.data$.subscribe((res) => console.log(res));
+    this.searchApiStatus$ = this._store.select(selectSearchApiStatus);
+    this.searchApiStatus$.subscribe((res: ApiStatus) => {
+      if (res === ApiStatus.Loaded) {
+        this.loaded = true;
+      }
+    });
   }
 
   ngOnInit(): void {}
 
-  onSearch(searchParams: SearchParameters): void {
+  onSortOrOrderBy(searchParams: FormGroup): void {
+    this.searchParams = { ...this.searchParams, ...searchParams };
+    this.onSearch();
+  }
+
+  onSearchBy(forms: any): void {
+    this.searchForms = forms;
+    this.searchParams = Object.assign({}, ...this.searchForms);
+    this.onSearch();
+  }
+
+  onSearch(): void {
     this._store.dispatch(
       search({
-        searchParams,
+        searchParams: this.searchParams,
       })
     );
   }

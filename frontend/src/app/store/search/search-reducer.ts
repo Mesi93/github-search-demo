@@ -5,7 +5,7 @@ import { search, searchError, searchSuccess } from './search-actions';
 
 export interface SearchState {
   apiStatus: ApiStatus;
-  results: any[];
+  results: GithubApiResults[];
 }
 
 export const initialState: SearchState = {

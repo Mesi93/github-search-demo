@@ -16,7 +16,7 @@ export class SearchEffects {
       ofType(search),
       switchMap((action) =>
         this.githubApiService.getRepositories(action.searchParams).pipe(
-          map((results) => searchSuccess({ results: results.items })),
+          map((results) => searchSuccess({ results: results })),
           catchError((err) => of(searchError(err))),
           tap(() => {
             console.log('search finished');
