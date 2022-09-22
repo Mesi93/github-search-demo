@@ -53,8 +53,8 @@ export class SearchFormComponent {
     this.searchFormAdvanced = new FormGroup({
       userName: new FormControl('', Validators.minLength(3)),
       organization: new FormControl('', Validators.minLength(3)),
-      languages: new FormControl([]),
-      topics: new FormControl([]),
+      languages: new FormControl(''),
+      topics: new FormControl(''),
       starsBy: new FormControl(''),
       sizeBy: new FormControl(''),
       createdBy: new FormControl(''),

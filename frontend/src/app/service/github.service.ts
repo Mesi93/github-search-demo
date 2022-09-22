@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -10,7 +11,7 @@ import { ParamsOption } from '../models/params-option.enum';
 export class GithubApiService {
   url = 'https://api.github.com/search';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient, public datepipe: DatePipe) {}
 
   getRepositories(parameters?: SearchParameters): Observable<any> {
     console.log(parameters);
@@ -24,23 +25,43 @@ export class GithubApiService {
     if (parameters?.byReadme) {
       params += ` in:readme`;
     }
-    /*     if (parameters?.topics) {
-      params += ` topic: ${parameters.topics.join(',')}`;
+    if (parameters?.topics) {
+      params += ` topic: ${
+        Array.isArray(parameters.topics)
+          ? parameters.topics.join(',')
+          : parameters.topics
+      }`;
     }
     if (parameters?.languages) {
-      params += ` language:${parameters.languages.join(',')}`;
-    } */
-    if (parameters?.created === ParamsOption.Equal && parameters?.created) {
-      params += ` created:${parameters.created}`;
+      params += ` language:${
+        Array.isArray(parameters.languages)
+          ? parameters.languages.join(',')
+          : parameters.languages
+      }`;
     }
-    if (parameters?.created === ParamsOption.Less && parameters?.created) {
-      params += ` created:<${parameters.created}`;
+    if (parameters?.createdBy === ParamsOption.Equal && parameters?.created) {
+      params += ` created:${this.datepipe.transform(
+        parameters.created,
+        'yyyy-MM-dd'
+      )}`;
     }
-    if (parameters?.created === ParamsOption.Greater && parameters?.created) {
-      params += ` created:>${parameters.created}`;
+    if (parameters?.createdBy === ParamsOption.Less && parameters?.created) {
+      params += ` created:<${this.datepipe.transform(
+        parameters.created,
+        'yyyy-MM-dd'
+      )}`;
+    }
+    if (parameters?.createdBy === ParamsOption.Greater && parameters?.created) {
+      params += ` created:>${this.datepipe.transform(
+        parameters.created,
+        'yyyy-MM-dd'
+      )}`;
     }
     if (parameters?.createdBy === ParamsOption.Between && parameters?.created) {
-      params += ` created:${parameters.createdStart}...${parameters.createdEnd}`;
+      params += ` created:${this.datepipe.transform(
+        parameters.createdStart,
+        'yyyy-MM-dd'
+      )}...${this.datepipe.transform(parameters.createdEnd, 'yyyy-MM-dd')}`;
     }
     if (parameters?.sizeBy === ParamsOption.Equal && parameters?.size) {
       params += ` size:${parameters.size}`;
@@ -66,12 +87,12 @@ export class GithubApiService {
     if (parameters?.starsBy === ParamsOption.Between && parameters?.stars) {
       params += ` stars:${parameters.starsStart}...${parameters.starsEnd}`;
     }
-
-    params += `&order=${parameters?.orderBy ? parameters?.orderBy : 'desc'}`;
-    params += `&sort=${parameters?.sortBy ? parameters?.sortBy : 'default'}`;
-
-    params += `&per_page=20`;
-
+    if (parameters?.sortBy && parameters.sizeBy !== 'default') {
+      params += `&sort=${parameters?.sortBy}`;
+    }
+    if (parameters?.orderBy) {
+      params += `&order=${parameters?.orderBy}`;
+    }
     console.log('params', params);
     return this.http.get<any>(this.url + '/' + params);
   }

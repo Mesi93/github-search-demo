@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SortOrderByFormComponent } from './feature/search/component/sort-order-by-form/sort-order-by-form.component';
 import { SearchHistoryListComponent } from './feature/history/component/search-history-list/search-history-list.component';
 import { historyReducer } from './store/history/history-reducer';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { historyReducer } from './store/history/history-reducer';
     }),
     EffectsModule.forRoot([SearchEffects]),
   ],
-  providers: [Store],
+  providers: [Store, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
