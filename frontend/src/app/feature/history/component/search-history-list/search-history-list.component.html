@@ -4,21 +4,43 @@
     *ngFor="let params of searchParamsHistory; let i = index"
     (click)="selectSearch(i)"
   >
-    <p>Search By: {{ params.searchBy }}</p>
+    <p><b> SEARCH BY: </b>{{ params.searchBy }}</p>
     <p>
-      In: {{ params.byName ? "name, " : null }}
+      <b> IN: </b> {{ params.byName ? "name, " : null }}
       {{ params.byDescription ? "description, " : null }}
       {{ params.byReadme ? "readme" : null }}
     </p>
-    <p>User name: {{ params.userName }}</p>
-    <p>Organization: {{ params.organization }}</p>
-    <p>Language: {{ params.languages }}</p>
-    <p>Topic: {{ params.topics }}</p>
+    <p><b>USER NAME: </b> {{ params.userName }}</p>
+    <p><b>ORGANIZATION: </b> {{ params.organization }}</p>
+    <p><b>ORGANIZATION: </b> {{ params.languages }}</p>
+    <p><b>TOPIC: </b> {{ params.topics }}</p>
     <p>
-      Stars:{{ params.starsBy }} -
-      {{ params.stars ? params.stars : params.starsStart }}
+      <b>STAR: </b>{{ params.starsBy }} -
+      <span *ngIf="params.stars">
+        {{ params.stars }}
+      </span>
+      <span *ngIf="params.starsStart && params.starsEnd">
+        {{ params.starsStart }} - {{ params.starsEnd }}
+      </span>
     </p>
-    <p>Size: {{ params.sizeBy }} - {{ params.size }}</p>
-    <p>Created: {{ params.createdBy }} - {{ params.created }}</p>
+    <p>
+      <b>SIZE: </b> {{ params.sizeBy }} -
+      <span *ngIf="params.size">
+        {{ params.size }}
+      </span>
+      <span *ngIf="params.sizeStart && params.sizeEnd"
+        >{{ params.sizeStart }} - {{ params.sizeEnd }}</span
+      >
+    </p>
+    <p>
+      <b>CREATED: </b> {{ params.createdBy }} -
+
+      <span *ngIf="params.created">
+        {{ params.created | date }}
+      </span>
+      <span *ngIf="params.createdStart && params.createdEnd">
+        {{ params.createdStart }} - {{ params.createdEnd }}
+      </span>
+    </p>
   </mat-card>
 </div>

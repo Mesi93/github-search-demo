@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ApiStatus } from 'src/app/models/api-status.enum';
@@ -42,7 +41,6 @@ export class SearchPageComponent {
   onSearchBy(forms: any): void {
     this.searchForms = forms;
     this.searchParams = Object.assign({}, ...this.searchForms);
-    console.log('searchParams', this.searchParams);
     this.onSearch();
   }
 

@@ -76,7 +76,6 @@ export class SearchResultComponent implements AfterViewInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((res: any) => {
           if (res && res?.items) {
-            console.log('repo', res);
             this.repositories = [];
             this.totalCount = res.total_count;
             this.setDataSource(res.items);
@@ -92,9 +91,8 @@ export class SearchResultComponent implements AfterViewInit, OnDestroy {
       );
       this.githubHistoryData$
         .pipe(takeUntil(this.unsubscribe))
-        .subscribe((res: any) => {
+        .subscribe((res: GithubApiResults[]) => {
           if (res && res.length) {
-            console.log('history repo', res);
             this.repositories = [];
             this.setDataSource(res);
           }

@@ -26,10 +26,7 @@ export class SearchEffects {
             addRepoHistory({ githubRepo: results.items }),
           ]),
 
-          catchError((err) => of(searchError(err))),
-          tap(() => {
-            console.log('search finished');
-          })
+          catchError((err) => of(searchError(err)))
         )
       )
     )
