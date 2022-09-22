@@ -1,11 +1,12 @@
 .container {
   margin-top: 1rem;
   width: 90%;
-  overflow-y: scroll;
   height: 700px;
+  overflow-y: scroll;
   background: grey;
   padding: 1rem;
   mat-card {
     margin-bottom: 1rem;
+    cursor: pointer;
   }
 }

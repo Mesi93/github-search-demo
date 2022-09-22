@@ -1,8 +1,8 @@
 <div class="container">
   <p>Total requests: {{ searchParamsHistory.length }}</p>
   <mat-card
-    *ngFor="let params of searchParamsHistory"
-    (click)="selectSearch(params)"
+    *ngFor="let params of searchParamsHistory; let i = index"
+    (click)="selectSearch(i)"
   >
     <p>Search By: {{ params.searchBy }}</p>
     <p>

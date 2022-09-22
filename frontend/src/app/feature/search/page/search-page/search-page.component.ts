@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ApiStatus } from 'src/app/models/api-status.enum';
 import { SearchParameters } from 'src/app/models/search-parameters';
-import { addSearchParamsHistory } from 'src/app/store/history/history-actions';
 import { search } from 'src/app/store/search/search-actions';
 import { selectSearchApiStatus } from 'src/app/store/search/search-selectors';
 
@@ -42,12 +42,6 @@ export class SearchPageComponent {
   onSearchBy(forms: any): void {
     this.searchForms = forms;
     this.searchParams = Object.assign({}, ...this.searchForms);
-    this.searchParams = Object.assign({}, this.searchParams, {
-      searchId: Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1),
-    });
-
     console.log('searchParams', this.searchParams);
     this.onSearch();
   }
@@ -55,11 +49,6 @@ export class SearchPageComponent {
   onSearch(): void {
     this._store.dispatch(
       search({
-        searchParams: this.searchParams,
-      })
-    );
-    this._store.dispatch(
-      addSearchParamsHistory({
         searchParams: this.searchParams,
       })
     );

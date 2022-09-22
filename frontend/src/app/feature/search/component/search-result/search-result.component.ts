@@ -9,13 +9,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { GithubApiResults } from 'src/app/models/github-api-results';
-import { addRepoHistory } from 'src/app/store/history/history-actions';
-import { selectHistoryRepoListById } from 'src/app/store/history/history-selectors';
+import { SearchIndexService } from 'src/app/service/search-index.service';
+import { selectHistoryRepoList } from 'src/app/store/history/history-selectors';
 import { selectResults } from 'src/app/store/search/search-selectors';
 export interface GithubRepo {
-  searchId?: string;
   name: string;
   url: string;
   info: any;
@@ -32,7 +31,10 @@ export interface GithubRepo {
   styleUrls: ['./search-result.component.scss'],
 })
 export class SearchResultComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   @Input() historyPage: boolean = false;
+  unsubscribe = new Subject<void>();
   repositories: GithubRepo[] = [];
   displayedColumns: string[] = [
     'name',
@@ -49,52 +51,60 @@ export class SearchResultComponent implements AfterViewInit, OnDestroy {
   githubHistoryData$!: Observable<GithubApiResults[]>;
   githubHistoryData!: GithubApiResults[];
   totalCount: number = 0;
-  searchId: string = '';
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  searchIndex$: Observable<number> = this.searchIndexService.searchIndex$;
 
-  constructor(private _store: Store) {
+  constructor(
+    private _store: Store,
+    private readonly searchIndexService: SearchIndexService
+  ) {
     this.dataSource = new MatTableDataSource();
-    if (!this.historyPage) {
-      this.githubData$ = this._store.pipe(select(selectResults));
-      this.githubData$.subscribe((res: any) => {
-        if (res) {
-          this.repositories = [];
-          this.totalCount = res.total_count;
-          this.setDataSource(res.items);
-        }
-      });
-    } else if (this.historyPage) {
-      this.githubHistoryData$ = this._store.pipe(
-        select(selectHistoryRepoListById(this.searchId))
-      );
-      this.githubHistoryData$.subscribe((res: any) => {
-        if (res) {
-          console.log('history repo', res);
-          this.repositories = res;
-          this.dataSource = new MatTableDataSource(this.repositories);
-        }
-      });
-    }
+    this.getGithubData();
+    this.getHistory();
   }
 
   ngOnDestroy() {
     this.repositories = [];
     this.dataSource = new MatTableDataSource(undefined);
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  addRepoToStore(repositories: GithubRepo[]) {
-    this._store.dispatch(
-      addRepoHistory({
-        githubRepo: repositories,
-      })
-    );
+  getGithubData(): void {
+    if (!this.historyPage) {
+      this.githubData$ = this._store.pipe(select(selectResults));
+      this.githubData$
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((res: any) => {
+          if (res && res?.items) {
+            console.log('repo', res);
+            this.repositories = [];
+            this.totalCount = res.total_count;
+            this.setDataSource(res.items);
+          }
+        });
+    }
+  }
+
+  getHistory(): void {
+    this.searchIndex$.pipe(takeUntil(this.unsubscribe)).subscribe((index) => {
+      this.githubHistoryData$ = this._store.pipe(
+        select(selectHistoryRepoList(index))
+      );
+      this.githubHistoryData$
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((res: any) => {
+          if (res && res.length) {
+            console.log('history repo', res);
+            this.repositories = [];
+            this.setDataSource(res);
+          }
+        });
+    });
   }
 
   setDataSource(githubResponse: GithubApiResults[]): void {
     githubResponse.forEach((repo: GithubApiResults) => {
       let repository: GithubRepo = {
-        searchId: '1',
         name: repo.full_name,
         url: repo.html_url,
         ownerUrl: repo.owner.html_url,
@@ -111,10 +121,7 @@ export class SearchResultComponent implements AfterViewInit, OnDestroy {
         avatar: repo.owner.avatar_url,
       };
       this.repositories.push(repository);
-      console.log('REPO', this.repositories);
       this.dataSource = new MatTableDataSource(this.repositories);
-      let repos = JSON.parse(JSON.stringify(this.repositories));
-      this.addRepoToStore(repos);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });

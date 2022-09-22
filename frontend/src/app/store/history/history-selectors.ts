@@ -11,13 +11,9 @@ export const selectHistorySearchList = createSelector(
   (state: HistoryState) => state.searchHistoryParamsList
 );
 
-export const selectHistoryRepoListById = (id: string) =>
+export const selectHistoryRepoList = (index: number) =>
   createSelector(selectHistoryState, (state: HistoryState) => {
     if (state) {
-      return state.searchHistoryRepoList.find((item: GithubRepo) => {
-        return item.searchId === id;
-      });
-    } else {
-      return [];
+      return state.searchHistoryRepoList[index];
     }
   });
