@@ -14,7 +14,6 @@ export class GithubApiService {
   constructor(private readonly http: HttpClient, public datepipe: DatePipe) {}
 
   getRepositories(parameters?: SearchParameters): Observable<any> {
-    console.log(parameters);
     let params = `repositories?q=${parameters?.searchBy}`;
     if (parameters?.byDescription) {
       params += ` in:description`;
@@ -93,7 +92,6 @@ export class GithubApiService {
     if (parameters?.orderBy) {
       params += `&order=${parameters?.orderBy}`;
     }
-    console.log('params', params);
     return this.http.get<any>(this.url + '/' + params);
   }
 }
