@@ -8,7 +8,6 @@ import { ParamsOption } from '../models/params-option.enum';
   providedIn: 'root',
 })
 export class GithubApiService {
-  // https://api.github.com/search/repositories?q=language:Java+created:>=2013-04-11T00:00:00Z&order=asc
   url = 'https://api.github.com/search';
 
   constructor(private readonly http: HttpClient) {}
