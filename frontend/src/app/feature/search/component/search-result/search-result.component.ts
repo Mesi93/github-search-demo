@@ -5,6 +5,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { MatEndDate } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -77,6 +78,7 @@ export class SearchResultComponent implements AfterViewInit, OnDestroy {
         .subscribe((res: any) => {
           if (res && res?.items) {
             this.repositories = [];
+            this.dataSource = new MatTableDataSource();
             this.totalCount = res.total_count;
             this.setDataSource(res.items);
           }
@@ -94,6 +96,7 @@ export class SearchResultComponent implements AfterViewInit, OnDestroy {
         .subscribe((res: GithubApiResults[]) => {
           if (res && res.length) {
             this.repositories = [];
+            this.dataSource = new MatTableDataSource();
             this.setDataSource(res);
           }
         });

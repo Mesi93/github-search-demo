@@ -13,8 +13,8 @@ export class GithubApiService {
   constructor(private readonly http: HttpClient) {}
 
   getRepositories(parameters?: SearchParameters): Observable<any> {
+    console.log(parameters);
     let params = `repositories?q=${parameters?.searchBy}`;
-
     if (parameters?.byDescription) {
       params += ` in:description`;
     }
@@ -24,19 +24,12 @@ export class GithubApiService {
     if (parameters?.byReadme) {
       params += ` in:readme`;
     }
-    if (parameters?.topics) {
-      params += ` in:topics: ${parameters.topics}`;
-    }
-    if (parameters?.userName) {
-      params += `&q=user:${parameters.userName}`;
-    }
-    if (parameters?.organization) {
-      params += `&q=org:${parameters.organization}`;
+    /*     if (parameters?.topics) {
+      params += ` topic: ${parameters.topics.join(',')}`;
     }
     if (parameters?.languages) {
-      params += `&q=language:${parameters.languages}`;
-    }
-
+      params += ` language:${parameters.languages.join(',')}`;
+    } */
     if (parameters?.created === ParamsOption.Equal && parameters?.created) {
       params += ` created:${parameters.created}`;
     }

@@ -17,15 +17,13 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
   styleUrls: ['./search-form.component.scss'],
 })
 export class SearchFormComponent {
-  @ViewChild('languageInput') languageInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
   @Output() onSearchEvent: EventEmitter<any> = new EventEmitter();
   @Output() onResetEvent: EventEmitter<any> = new EventEmitter();
   separatorKeysCodes: number[] = [ENTER, COMMA];
   searchForm!: FormGroup;
   searchFormAdvanced!: FormGroup;
   checkboxError: boolean = false;
-  allLanguages: string[] = [
+  languages: string[] = [
     'JavaScript',
     'TypeScript',
     'C++',
@@ -35,29 +33,10 @@ export class SearchFormComponent {
     'Swift',
     'PHP',
   ];
-  languages: string[] = [];
-  filteredLanguages$: Observable<string[]>;
-  allTopics: string[] = ['Github', 'Interview'];
-  topics: string[] = [];
-  filteredTopics$: Observable<string[]>;
+  topics: string[] = ['Github', 'Interview'];
+
   constructor() {
     this.createForm();
-    this.filteredLanguages$ = this.searchFormAdvanced.controls[
-      'languages'
-    ].valueChanges.pipe(
-      startWith(null),
-      map((language: string | null) =>
-        language ? this._filterLanguage(language) : this.allLanguages.slice()
-      )
-    );
-    this.filteredTopics$ = this.searchFormAdvanced.controls[
-      'topics'
-    ].valueChanges.pipe(
-      startWith(null),
-      map((topics: string | null) =>
-        topics ? this._filterTopic(topics) : this.allTopics.slice()
-      )
-    );
   }
 
   createForm(): void {
@@ -74,8 +53,8 @@ export class SearchFormComponent {
     this.searchFormAdvanced = new FormGroup({
       userName: new FormControl('', Validators.minLength(3)),
       organization: new FormControl('', Validators.minLength(3)),
-      languages: new FormControl(''),
-      topics: new FormControl(''),
+      languages: new FormControl([]),
+      topics: new FormControl([]),
       starsBy: new FormControl(''),
       sizeBy: new FormControl(''),
       createdBy: new FormControl(''),
@@ -121,10 +100,8 @@ export class SearchFormComponent {
     const value = (event.value || '').trim();
     if (value) {
       this.languages.push(value);
-      this.searchFormAdvanced.controls['languages'].setValue(this.languages);
     }
     event.chipInput!.clear();
-    this.searchFormAdvanced.controls['languages'].setValue(null);
   }
 
   removeLanguage(language: string): void {
@@ -134,19 +111,12 @@ export class SearchFormComponent {
     }
   }
 
-  languageSelected(event: MatAutocompleteSelectedEvent): void {
-    this.languages.push(event.option.viewValue);
-    this.languageInput.nativeElement.value = '';
-  }
-
   addTopic(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
       this.topics.push(value);
-      this.searchFormAdvanced.controls['topics'].setValue(this.topics);
     }
     event.chipInput!.clear();
-    this.searchFormAdvanced.controls['topics'].setValue(null);
   }
 
   removeTopic(topic: string): void {
@@ -154,24 +124,5 @@ export class SearchFormComponent {
     if (index >= 0) {
       this.topics.splice(index, 1);
     }
-  }
-
-  topicSelected(event: MatAutocompleteSelectedEvent): void {
-    this.topics.push(event.option.viewValue);
-    this.topicInput.nativeElement.value = '';
-  }
-
-  private _filterLanguage(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.allLanguages.filter((language) =>
-      language.toLowerCase().includes(filterValue)
-    );
-  }
-
-  private _filterTopic(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.allTopics.filter((topic) =>
-      topic.toLowerCase().includes(filterValue)
-    );
   }
 }

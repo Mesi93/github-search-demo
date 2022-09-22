@@ -72,72 +72,50 @@
 
         <mat-form-field class="full-width" appearance="legacy">
           <mat-label>Languages</mat-label>
-          <mat-chip-list #chipLanguageList>
+          <mat-chip-list #chipListLanguage multiple formControlName="languages">
             <mat-chip
               *ngFor="let language of languages"
               (removed)="removeLanguage(language)"
+              [value]="language"
             >
               {{ language }}
+
               <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip>
             <input
-              formControlName="languages"
               placeholder="New language..."
-              #languageInput
-              [matAutocomplete]="autoLanguage"
-              [matChipInputFor]="chipLanguageList"
+              [matChipInputFor]="chipListLanguage"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true"
               (matChipInputTokenEnd)="addLanguage($event)"
             />
           </mat-chip-list>
-          <mat-autocomplete
-            #autoLanguage="matAutocomplete"
-            (optionSelected)="languageSelected($event)"
-          >
-            <mat-option
-              *ngFor="let language of filteredLanguages$ | async"
-              [value]="language"
-            >
-              {{ language }}
-            </mat-option>
-          </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="legacy">
           <mat-label>Topics</mat-label>
-          <mat-chip-list #chipTopicList>
+          <mat-chip-list #chipListTopic multiple formControlName="topics">
             <mat-chip
               *ngFor="let topic of topics"
               (removed)="removeTopic(topic)"
+              [value]="topic"
             >
               {{ topic }}
+
               <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip>
             <input
-              formControlName="topics"
               placeholder="New topic..."
-              #topicInput
-              [matAutocomplete]="autoTopic"
-              [matChipInputFor]="chipTopicList"
+              [matChipInputFor]="chipListTopic"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true"
               (matChipInputTokenEnd)="addTopic($event)"
             />
           </mat-chip-list>
-          <mat-autocomplete
-            #autoTopic="matAutocomplete"
-            (optionSelected)="topicSelected($event)"
-          >
-            <mat-option
-              *ngFor="let topic of filteredTopics$ | async"
-              [value]="topic"
-            >
-              {{ topic }}
-            </mat-option>
-          </mat-autocomplete>
         </mat-form-field>
 
         <mat-card class="advanced-form-section">
