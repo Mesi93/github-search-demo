@@ -10,12 +10,14 @@
       {{ params.byDescription ? "description, " : null }}
       {{ params.byReadme ? "readme" : null }}
     </p>
-    <p><b>USER NAME: </b> {{ params.userName }}</p>
-    <p><b>ORGANIZATION: </b> {{ params.organization }}</p>
-    <p><b>ORGANIZATION: </b> {{ params.languages }}</p>
-    <p><b>TOPIC: </b> {{ params.topics }}</p>
-    <p>
-      <b>STAR: </b>{{ params.starsBy }} -
+    <p *ngIf="params.userName"><b>USER NAME: </b> {{ params.userName }}</p>
+    <p *ngIf="params.organization">
+      <b>ORGANIZATION: </b> {{ params.organization }}
+    </p>
+    <p *ngIf="params.languages"><b>LANGUAGES: </b> {{ params.languages }}</p>
+    <p *ngIf="params.topics"><b>TOPIC: </b> {{ params.topics }}</p>
+    <p *ngIf="params.starsBy">
+      <b>STARS: </b>{{ params.starsBy }} -
       <span *ngIf="params.stars">
         {{ params.stars }}
       </span>
@@ -23,7 +25,7 @@
         {{ params.starsStart }} - {{ params.starsEnd }}
       </span>
     </p>
-    <p>
+    <p *ngIf="params.sizeBy">
       <b>SIZE: </b> {{ params.sizeBy }} -
       <span *ngIf="params.size">
         {{ params.size }}
@@ -32,7 +34,7 @@
         >{{ params.sizeStart }} - {{ params.sizeEnd }}</span
       >
     </p>
-    <p>
+    <p *ngIf="params.createdBy">
       <b>CREATED: </b> {{ params.createdBy }} -
 
       <span *ngIf="params.created">
