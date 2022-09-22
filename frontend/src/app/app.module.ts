@@ -19,6 +19,7 @@ import { SearchResultComponent } from './feature/search/component/search-result/
 import { HttpClientModule } from '@angular/common/http';
 import { SortOrderByFormComponent } from './feature/search/component/sort-order-by-form/sort-order-by-form.component';
 import { SearchHistoryListComponent } from './feature/history/component/search-history-list/search-history-list.component';
+import { historyReducer } from './store/history/history-reducer';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SearchHistoryListComponent } from './feature/history/component/search-h
     ReactiveFormsModule,
     StoreModule.forRoot({
       search: searchReducer,
+      searchParamsHistory: historyReducer,
     }),
     EffectsModule.forRoot([SearchEffects]),
   ],

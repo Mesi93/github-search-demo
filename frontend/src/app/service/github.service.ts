@@ -21,8 +21,8 @@ export class GithubApiService {
     if (parameters?.languages) {
       params += `language:Java&`;
     }
-    if (parameters?.topic) {
-      params += `topics?q=${parameters.topic}&`;
+    if (parameters?.topics) {
+      params += `topics?q=${parameters.topics}&`;
     }
     params += `order=${parameters?.orderBy ? parameters?.orderBy : 'desc'}&`;
     params += `sort=${parameters?.sortBy ? parameters?.sortBy : 'default'}&`;
@@ -36,7 +36,7 @@ export class GithubApiService {
     if (parameters?.byReadme) {
       params += ` in:readme`;
     }
-    params += `&per_page=5`;
+    params += `&per_page=20`;
 
     console.log('params', params);
     return this.http.get<any>(this.url + '/' + params);
