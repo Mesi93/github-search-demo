@@ -36,6 +36,16 @@ describe('SearchResultComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should display response total count', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
+    const totalResults = hostElement.querySelector('#total-results');
+    component.historyPage = false;
+    component.getGithubData();
+    expect(totalResults?.textContent).toContain(component.totalCount);
+    component.historyPage = true;
+    expect(totalResults?.textContent).toContain(0);
+  });
+
   it('get githubdata', () => {
     const hostElement: HTMLElement = fixture.nativeElement;
     let githubData = [
@@ -61,6 +71,6 @@ describe('SearchResultComponent', () => {
     component.setDataSource(githubData);
     fixture.detectChanges();
     const nameColumn = hostElement.querySelector('#name-column');
-    expect(nameColumn?.innerHTML).toBe(' test ');
+    expect(nameColumn?.textContent).toBe(' test ');
   });
 });

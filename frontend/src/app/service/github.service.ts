@@ -25,14 +25,14 @@ export class GithubApiService {
     if (parameters?.byReadme) {
       params += ` in:readme`;
     }
-    if (parameters?.topics) {
+    if (parameters?.topics && Array.isArray(parameters.topics.length)) {
       params += ` topic: ${
         Array.isArray(parameters.topics)
           ? parameters.topics.join(',')
           : parameters.topics
       }`;
     }
-    if (parameters?.languages) {
+    if (parameters?.languages && Array.isArray(parameters.languages.length)) {
       params += ` language:${
         Array.isArray(parameters.languages)
           ? parameters.languages.join(',')

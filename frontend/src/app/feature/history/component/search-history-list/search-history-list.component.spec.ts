@@ -33,4 +33,13 @@ describe('SearchHistoryListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display total requests', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
+    const totalResults = hostElement.querySelector('#total_requests');
+    component.getHistory();
+    expect(totalResults?.textContent).toContain(
+      component.searchParamsHistory.length
+    );
+  });
 });

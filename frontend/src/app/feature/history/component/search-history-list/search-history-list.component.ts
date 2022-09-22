@@ -18,6 +18,15 @@ export class SearchHistoryListComponent implements OnDestroy {
     private _store: Store,
     private readonly searchIndexService: SearchIndexService
   ) {
+    this.getHistory();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
+  getHistory(): void {
     this.searchParamsHistory$ = this._store.select(selectHistorySearchList);
     this.searchParamsHistory$
       .pipe(takeUntil(this.unsubscribe))
@@ -26,11 +35,6 @@ export class SearchHistoryListComponent implements OnDestroy {
           this.searchParamsHistory = res;
         }
       });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
   }
 
   selectSearch(index: number): void {
